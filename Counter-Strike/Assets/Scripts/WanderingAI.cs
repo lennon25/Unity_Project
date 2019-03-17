@@ -10,8 +10,15 @@ public class WanderingAI : MonoBehaviour {
 	public float speed = 3.0f;
 	public float obstacleRange = 5.0f;
 	private bool _alive;
+	public const float baseSpeed = 3.0f;
 
+	void Awake(){
+		Messenger<float>.AddListener(GameEvent.SPEED_CHANGED, OnSpeedChanged);
+	}
 
+	void OnDestroy(){
+		Messenger<float>.RemoveListener(GameEvent.SPEED_CHANGED, OnSpeedChanged);
+	}
 
 	void Start() {
 		_alive = true;
@@ -45,5 +52,9 @@ public class WanderingAI : MonoBehaviour {
 
 	public void SetAlive(bool alive){
 		_alive = alive;
+	}
+
+	public void OnSpeedChanged(float value){
+		speed = baseSpeed * value;
 	}
 }
