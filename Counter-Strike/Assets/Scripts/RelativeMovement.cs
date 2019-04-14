@@ -18,6 +18,8 @@ public class RelativeMovement : MonoBehaviour {
 	private float _vertSpeed;
 	private Animator _animator;
 
+	public float pushForce = 3.0f;
+
 
 	void Start(){
 		_charController = GetComponent<CharacterController>();
@@ -92,5 +94,11 @@ public class RelativeMovement : MonoBehaviour {
 
 	void OnControllerColliderHit(ControllerColliderHit hit){
 		_contact = hit;
+
+		// 检查碰撞对象上是否添加rigidbody，并施加推力
+		Rigidbody body = hit.collider.attachedRigidbody;
+		if(body != null && !body.isKinematic){
+			body.velocity = hit.moveDirection * pushForce;
+		}
 	}
 }
